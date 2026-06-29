@@ -1,0 +1,4 @@
+[build]
+  publish = "."
+  command = "rm -rf node_modules components .git *.py"
+

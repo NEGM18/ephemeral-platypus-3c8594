@@ -1,0 +1,345 @@
+/* Skills Network Section */
+.skills-section {
+    padding: 6rem 5%;
+    background-color: var(--bg-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.skills-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    gap: 4rem;
+}
+
+.skills-title-area {
+    width: 30%;
+}
+
+.skills-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--text-color);
+}
+
+.skills-network-area {
+    width: 65%;
+    position: relative;
+    height: 600px;
+    /* Fixed height for the network plot */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.network-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    /* Let clicks pass through lines */
+}
+
+.connection-line {
+    stroke: rgba(88, 166, 255, 0.3);
+    stroke-width: 2;
+    fill: none;
+    transition: stroke 0.3s ease;
+}
+
+.node {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    transform: translate(-50%, -50%);
+    /* Center node on coordinates */
+}
+
+.node img {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+    filter: grayscale(100%);
+    transition: all 0.3s ease;
+}
+
+.node i {
+    font-size: 1.5rem;
+    color: #8b949e;
+    transition: all 0.3s ease;
+}
+
+/* Hover Effects */
+.node:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 20px rgba(88, 166, 255, 0.6);
+    transform: translate(-50%, -50%) scale(1.2);
+    /* Maintain center + scale */
+    z-index: 10;
+}
+
+.node:hover img {
+    filter: grayscale(0%);
+}
+
+.node:hover i {
+    color: var(--text-color);
+}
+
+/* Tooltip Card */
+.skill-card {
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    width: 300px;
+    background: linear-gradient(135deg, rgba(13, 13, 15, 0.95), rgba(5, 5, 5, 0.98));
+    border: 1px solid var(--primary-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+    z-index: 20;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.skill-card.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.skill-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.skill-level-label {
+    font-size: 0.9rem;
+    color: #8b949e;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.level-bar-bg {
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.level-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--secondary-color), var(--highlight-color));
+    border-radius: 4px;
+    width: 0%;
+    transition: width 0.6s ease-out;
+}
+
+/* Orbiting Skills Styling */
+.orbit-path {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.orbit-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+}
+
+.glow-cyan-bg {
+    background: radial-gradient(circle, transparent 30%, rgba(6, 182, 212, 0.1) 70%, rgba(6, 182, 212, 0.25) 100%);
+    box-shadow: 0 0 50px rgba(6, 182, 212, 0.25), inset 0 0 50px rgba(6, 182, 212, 0.15);
+    animation: orbit-pulse 4s ease-in-out infinite;
+}
+
+.glow-purple-bg {
+    background: radial-gradient(circle, transparent 30%, rgba(147, 51, 234, 0.1) 70%, rgba(147, 51, 234, 0.25) 100%);
+    box-shadow: 0 0 50px rgba(147, 51, 234, 0.25), inset 0 0 50px rgba(147, 51, 234, 0.15);
+    animation: orbit-pulse 4s ease-in-out infinite;
+    animation-delay: 1.5s;
+}
+
+.orbit-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+}
+
+.border-cyan {
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    box-shadow: inset 0 0 15px rgba(6, 182, 212, 0.1);
+}
+
+.border-purple {
+    border: 1px solid rgba(147, 51, 234, 0.2);
+    box-shadow: inset 0 0 15px rgba(147, 51, 234, 0.1);
+}
+
+/* Central Node Styling */
+.central-node {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #1f2937, #111827);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.central-node .glow-cyan {
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    background-color: rgba(6, 182, 212, 0.15);
+    z-index: 1;
+}
+
+.central-node .glow-purple {
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    background-color: rgba(147, 51, 234, 0.1);
+    z-index: 1;
+}
+
+.central-icon {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Orbiting Node Styling Overrides */
+.node.orbiting-node {
+    position: absolute;
+    margin: 0;
+    transform: translate(-50%, -50%);
+    z-index: 15;
+    background-color: rgba(13, 17, 23, 0.9);
+    border: 1px solid rgba(48, 54, 61, 0.8);
+    width: 46px;
+    height: 46px;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.node.orbiting-node.node-inner {
+    width: 40px;
+    height: 40px;
+}
+
+.node.orbiting-node:hover {
+    transform: translate(-50%, -50%) scale(1.25);
+    z-index: 30;
+}
+
+.node.orbiting-node.node-inner:hover {
+    border-color: #06b6d4;
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.4), 0 0 40px rgba(6, 182, 212, 0.2);
+}
+
+.node.orbiting-node.node-outer:hover {
+    border-color: #9333ea;
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.4), 0 0 40px rgba(147, 51, 234, 0.2);
+}
+
+@keyframes orbit-pulse {
+    0%, 100% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 900px) {
+    .skills-container {
+        flex-direction: column;
+        height: auto;
+        gap: 2rem;
+    }
+
+    .skills-title-area {
+        width: 100%;
+        text-align: center;
+    }
+
+    .skills-network-area {
+        width: 100%;
+        max-width: 480px;
+        height: 480px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    .skill-card {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.95);
+        width: 280px;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .skill-card.active {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@media (max-width: 500px) {
+    .skills-network-area {
+        transform: scale(0.85);
+        height: 410px;
+        margin-top: -30px;
+        margin-bottom: -30px;
+    }
+}
+
+@media (max-width: 400px) {
+    .skills-network-area {
+        transform: scale(0.7);
+        height: 336px;
+        margin-top: -70px;
+        margin-bottom: -70px;
+    }
+}
