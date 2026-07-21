@@ -61,9 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
     - Never generate this token unless the user explicitly wants to navigate, see, or go to a section.
     `;
 
-    // Direct Gemini Client-Side Fallback details (used only if serverless function returns 404 or fails)
-    const CLIENT_API_KEY = "AIzaSyAP98uY-yAJayd9DYP2PbijHFlIGGBxOqo";
-
     // -------------------------------------------------------------
     // 2. DOM Elements
     // -------------------------------------------------------------
@@ -721,38 +718,11 @@ document.addEventListener("DOMContentLoaded", () => {
             throw new Error(`Serverless Function returned ${response.status}`);
 
         } catch (serverlessError) {
-            console.warn("Netlify function call failed, falling back to direct API. Error:", serverlessError.message);
-            
-            // 2. Direct client fallback (Very robust for local dev environment)
-            const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${CLIENT_API_KEY}`;
-            
-            // Combine instruction + user messages for direct call format if needed,
-            // or pass systemInstruction directly if supported by target URL.
-            const directPayload = {
-                contents: state.chatHistory,
-                systemInstruction: {
-                    parts: [{ text: SYSTEM_INSTRUCTION }]
-                }
-            };
-
-            try {
-                const directRes = await fetch(fallbackUrl, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(directPayload)
-                });
-
-                if (directRes.ok) {
-                    const data = await directRes.json();
-                    return parseGeminiOutput(data);
-                }
-                const errorData = await directRes.json();
-                throw new Error(errorData.error?.message || "Direct API call failure");
-
-            } catch (directError) {
-                console.error("Direct API Fallback failed:", directError);
-                throw new Error("Unable to query Gemini API. Check your connection!");
-            }
+            // No client-side fallback: calling the Gemini API directly from the
+            // browser would require embedding the API key in public JS, which
+            // defeats the point of proxying through the serverless function.
+            console.error("Netlify function call failed:", serverlessError.message);
+            throw new Error("Unable to query Gemini API. Check your connection!");
         }
     };
 

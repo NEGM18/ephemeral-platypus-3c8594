@@ -1,4 +1,5 @@
 [build]
   publish = "."
-  command = "rm -rf node_modules components .git *.py"
+  command = "rm -rf node_modules components *.py"
+  functions = "netlify/functions"
 
