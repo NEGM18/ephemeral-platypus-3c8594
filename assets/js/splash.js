@@ -424,7 +424,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const splashCanvas = document.getElementById("splash-canvas");
     const enterBtn = document.getElementById("splash-enter-btn");
     const heroBgCanvas = document.getElementById("hero-bg-canvas");
-    
+
+    // Start the ambient starfield immediately and independently of the splash
+    // screen / enter button flow below. The splash screen is fully opaque, so
+    // this is invisible until it fades out — but crucially, the stars no
+    // longer depend on every GSAP call in the click handler succeeding first.
+    if (heroBgCanvas) {
+        try {
+            const ambientStarfield = new AmbientStarfield(heroBgCanvas);
+            ambientStarfield.start();
+            heroBgCanvas.classList.add("show");
+        } catch (err) {
+            console.error("Ambient starfield failed to start:", err);
+        }
+    }
+
     if (splashScreen && splashCanvas && enterBtn) {
         const ctx = splashCanvas.getContext("2d");
         
@@ -521,17 +535,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             
             if (document.querySelector("#hero-tour-prompt")) {
-                gsap.fromTo("#hero-tour-prompt", 
-                    { xPercent: -50, y: 15, opacity: 0 }, 
+                gsap.fromTo("#hero-tour-prompt",
+                    { xPercent: -50, y: 15, opacity: 0 },
                     { xPercent: -50, y: 0, opacity: 1, duration: 1.0, ease: "power3.out", delay: 1.2 }
                 );
-            }
-            
-            // Start ambient starfield background in hero section
-            if (heroBgCanvas) {
-                const ambientStarfield = new AmbientStarfield(heroBgCanvas);
-                ambientStarfield.start();
-                heroBgCanvas.classList.add("show");
             }
         });
     }
