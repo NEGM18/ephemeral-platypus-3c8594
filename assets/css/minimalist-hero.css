@@ -2,8 +2,8 @@
 .hero-section {
     min-height: 100vh;
     width: 100vw;
-    background-color: #000000 !important;
-    /* Force pure black background matching the screenshot */
+    background-color: transparent !important;
+    /* Force transparent background so stars show through */
     position: relative;
     overflow: hidden;
     display: flex;

@@ -61,9 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
     - Never generate this token unless the user explicitly wants to navigate, see, or go to a section.
     `;
 
-    // Direct Gemini Client-Side Fallback details (used only if serverless function returns 404 or fails)
-    const CLIENT_API_KEY = "AIzaSyAP98uY-yAJayd9DYP2PbijHFlIGGBxOqo";
-
     // -------------------------------------------------------------
     // 2. DOM Elements
     // -------------------------------------------------------------
@@ -692,7 +689,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // 6. Gemini API Integration & Proxy
     // -------------------------------------------------------------
     
-    // Call serverless proxy or fallback directly to client call
+    // Call the Netlify serverless proxy, which holds the Gemini API key server-side.
+    // There is deliberately no client-side fallback: any API key embedded in this
+    // file would ship to every visitor's browser and get scraped/revoked (as
+    // happened before). If the proxy is unavailable, surface a clear error instead.
     const fetchGeminiResponse = async (userMessage) => {
         // Append user query to chat history state
         state.chatHistory.push({
@@ -706,7 +706,6 @@ document.addEventListener("DOMContentLoaded", () => {
             systemInstruction: SYSTEM_INSTRUCTION
         };
 
-        // 1. Try Calling Netlify Serverless Function
         try {
             const response = await fetch("/.netlify/functions/gemini", {
                 method: "POST",
@@ -721,38 +720,8 @@ document.addEventListener("DOMContentLoaded", () => {
             throw new Error(`Serverless Function returned ${response.status}`);
 
         } catch (serverlessError) {
-            console.warn("Netlify function call failed, falling back to direct API. Error:", serverlessError.message);
-            
-            // 2. Direct client fallback (Very robust for local dev environment)
-            const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${CLIENT_API_KEY}`;
-            
-            // Combine instruction + user messages for direct call format if needed,
-            // or pass systemInstruction directly if supported by target URL.
-            const directPayload = {
-                contents: state.chatHistory,
-                systemInstruction: {
-                    parts: [{ text: SYSTEM_INSTRUCTION }]
-                }
-            };
-
-            try {
-                const directRes = await fetch(fallbackUrl, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(directPayload)
-                });
-
-                if (directRes.ok) {
-                    const data = await directRes.json();
-                    return parseGeminiOutput(data);
-                }
-                const errorData = await directRes.json();
-                throw new Error(errorData.error?.message || "Direct API call failure");
-
-            } catch (directError) {
-                console.error("Direct API Fallback failed:", directError);
-                throw new Error("Unable to query Gemini API. Check your connection!");
-            }
+            console.error("Gemini proxy call failed:", serverlessError.message);
+            throw new Error("Unable to reach Nova's AI backend right now. Please try again shortly!");
         }
     };
 
@@ -869,9 +838,8 @@ document.addEventListener("DOMContentLoaded", () => {
         hero: "We are back at the start! I'm Nova, your AI assistant. Type or speak your question, or start a tour!",
         about: "Here is where Omar lives in the terminal window. He builds complex AI pipelines and machine learning scripts. Very analytical!",
         skills: "Take a look at this orbiting network of technical skills. Omar is expert in Python, PyTorch, Computer Vision, and NLP!",
-        projects: "These are Omar's design projects. Click on the thumbnails to switch details! He built an anti-cheat system called AI Observer.",
+        projects: "These are Omar's AI and machine learning projects, from an anti-cheat computer vision system to a RAG-based document assistant. Click any card to view it on GitHub!",
         certificates: "These are Omar's professional credentials, including certifications from NTI and Nvidia! He's a certified ML Engineer.",
-        "future-work": "Here is Omar's roadmap. He is currently developing version 2 of his anti-cheat AI Observer system.",
         contact: "You've reached the end! Send Omar an email at onegm036@gmail.com, or check out his LinkedIn. Let's build something together!"
     };
 
@@ -943,7 +911,7 @@ document.addEventListener("DOMContentLoaded", () => {
         {
             section: "projects",
             title: "Featured Creations",
-            text: "Take a look at his projects. He led ArabSyntax, an NLP model parsing Arabic linguistics, and built AI Observer, which uses computer vision to audit remote assessments.",
+            text: "Take a look at his projects. He built AI Observer, a full-stack exam-proctoring platform, an anti-cheat computer vision engine using YOLO, and a RAG-based document Q&A assistant.",
             emotion: "pointing"
         },
         {

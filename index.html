@@ -37,8 +37,11 @@
         </div>
     </div>
 
-    <div id="code-background" class="code-background"></div>
+    <!-- Fullscreen Starry Background -->
+    <canvas id="hero-bg-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1;"></canvas>
+
     <canvas id="spotlight-canvas"></canvas>
+    <canvas id="rocket-canvas"></canvas>
     <header id="header">
         <nav class="navbar" style="opacity: 0; transform: translateY(-20px);">
             <div class="logo">Omar<span>.AI</span></div>
@@ -47,7 +50,6 @@
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#certificates">Certificates</a></li>
-                <li><a href="#future-work">Future Work</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
             <div class="hamburger">
@@ -57,10 +59,7 @@
     </header>
     <main>
         <section class="hero-section" id="hero">
-            <canvas id="hero-bg-canvas"
-                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></canvas>
-            <div class="hero-container">
-                <!-- Left text column -->
+            <div class="hero-container">    <!-- Left text column -->
                 <div class="hero-left">
                     <p class="hero-desc">
                         Omar Negm is an AI Engineering student at New Mansoura University. Specialized in building
@@ -134,93 +133,65 @@
             <div class="skills-container">
                 <div class="skills-title-area reveal">
                     <h2 class="skills-title">My <span class="highlight">Skills</span></h2>
-                    <p class="reveal stagger-delay-1">A neural network of my technical capabilities.</p>
+                    <p class="reveal stagger-delay-1">Floating along Saturn's rings — the languages, frameworks, and tools I work with.</p>
                 </div>
                 <div class="skills-network-area reveal-right" id="skills-orbit-container">
-                    <!-- Central "Code" Icon with enhanced glow -->
-                    <div class="central-node shadow-2xl">
-                        <div class="glow-cyan blur-xl animate-pulse"></div>
-                        <div class="glow-purple blur-2xl animate-pulse" style="animation-delay: 1s;"></div>
-                        <div class="central-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24"
-                                fill="none" stroke="url(#gradient)" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <defs>
-                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" stop-color="#06B6D4" />
-                                        <stop offset="100%" stop-color="#9333EA" />
-                                    </linearGradient>
-                                </defs>
-                                <polyline points="16 18 22 12 16 6"></polyline>
-                                <polyline points="8 6 2 12 8 18"></polyline>
-                            </svg>
-                        </div>
-                    </div>
+                    <canvas id="saturn-canvas"></canvas>
 
-                    <!-- Glowing Orbit Paths -->
-                    <div class="orbit-path path-inner" style="width: 220px; height: 220px;">
-                        <div class="orbit-glow glow-cyan-bg" style="animation-delay: 0s;"></div>
-                        <div class="orbit-ring border-cyan"></div>
-                    </div>
-                    <div class="orbit-path path-outer" style="width: 400px; height: 400px;">
-                        <div class="orbit-glow glow-purple-bg" style="animation-delay: 1.5s;"></div>
-                        <div class="orbit-ring border-purple"></div>
-                    </div>
-
-                    <!-- Nodes (Orbiting Icons) -->
-                    <!-- Inner Orbit (Radius 110) -->
+                    <!-- Skill Icons (positioned each frame along Saturn's ring by saturn-skills.js) -->
+                    <!-- Inner Ring Track -->
                     <div class="node orbiting-node node-inner" data-skill="Python" data-level="95"
-                        data-orbit-radius="110" data-speed="1" data-phase="0">
+                        data-track="inner" data-phase="0">
                         <i class="fab fa-python" style="color: #3776AB;"></i>
                     </div>
                     <div class="node orbiting-node node-inner" data-skill="Algorithms" data-level="85"
-                        data-orbit-radius="110" data-speed="1" data-phase="1.256">
+                        data-track="inner" data-phase="1.256">
                         <i class="fas fa-code-branch" style="color: #4CAF50;"></i>
                     </div>
                     <div class="node orbiting-node node-inner" data-skill="Data Structures" data-level="80"
-                        data-orbit-radius="110" data-speed="1" data-phase="2.513">
+                        data-track="inner" data-phase="2.513">
                         <i class="fas fa-layer-group" style="color: #FF9800;"></i>
                     </div>
-                    <div class="node orbiting-node node-inner" data-skill="Git" data-level="90" data-orbit-radius="110"
-                        data-speed="1" data-phase="3.769">
+                    <div class="node orbiting-node node-inner" data-skill="Git" data-level="90"
+                        data-track="inner" data-phase="3.769">
                         <i class="fab fa-git-alt" style="color: #F05032;"></i>
                     </div>
-                    <div class="node orbiting-node node-inner" data-skill="SQL" data-level="85" data-orbit-radius="110"
-                        data-speed="1" data-phase="5.026">
+                    <div class="node orbiting-node node-inner" data-skill="SQL" data-level="85"
+                        data-track="inner" data-phase="5.026">
                         <i class="fas fa-database" style="color: #00758F;"></i>
                     </div>
 
-                    <!-- Outer Orbit (Radius 200) -->
+                    <!-- Outer Ring Track -->
                     <div class="node orbiting-node node-outer" data-skill="TensorFlow" data-level="90"
-                        data-orbit-radius="200" data-speed="-0.6" data-phase="0">
+                        data-track="outer" data-phase="0">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Tensorflow_logo.svg" alt="TF">
                     </div>
                     <div class="node orbiting-node node-outer" data-skill="PyTorch" data-level="88"
-                        data-orbit-radius="200" data-speed="-0.6" data-phase="0.785">
+                        data-track="outer" data-phase="0.785">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/1/10/PyTorch_logo_icon.svg" alt="PT">
                     </div>
                     <div class="node orbiting-node node-outer" data-skill="Keras" data-level="85"
-                        data-orbit-radius="200" data-speed="-0.6" data-phase="1.57">
+                        data-track="outer" data-phase="1.57">
                         <i class="fas fa-project-diagram" style="color: #D00000;"></i>
                     </div>
                     <div class="node orbiting-node node-outer" data-skill="OpenCV" data-level="80"
-                        data-orbit-radius="200" data-speed="-0.6" data-phase="2.356">
+                        data-track="outer" data-phase="2.356">
                         <i class="fas fa-eye" style="color: #5C3EE6;"></i>
                     </div>
                     <div class="node orbiting-node node-outer" data-skill="Comp. Vision" data-level="85"
-                        data-orbit-radius="200" data-speed="-0.6" data-phase="3.141">
+                        data-track="outer" data-phase="3.141">
                         <i class="fas fa-camera" style="color: #00BCD4;"></i>
                     </div>
-                    <div class="node orbiting-node node-outer" data-skill="NLP" data-level="90" data-orbit-radius="200"
-                        data-speed="-0.6" data-phase="3.926">
+                    <div class="node orbiting-node node-outer" data-skill="NLP" data-level="90"
+                        data-track="outer" data-phase="3.926">
                         <i class="fas fa-language" style="color: #9C27B0;"></i>
                     </div>
-                    <div class="node orbiting-node node-outer" data-skill="LLMs" data-level="70" data-orbit-radius="200"
-                        data-speed="-0.6" data-phase="4.712">
+                    <div class="node orbiting-node node-outer" data-skill="LLMs" data-level="70"
+                        data-track="outer" data-phase="4.712">
                         <i class="fas fa-robot" style="color: #E91E63;"></i>
                     </div>
                     <div class="node orbiting-node node-outer" data-skill="Data Analysis" data-level="88"
-                        data-orbit-radius="200" data-speed="-0.6" data-phase="5.497">
+                        data-track="outer" data-phase="5.497">
                         <i class="fas fa-chart-line" style="color: #3F51B5;"></i>
                     </div>
 
@@ -240,59 +211,77 @@
             </div>
         </section>
         <section class="section projects-section" id="projects">
-            <div class="projects-layout">
-                <!-- Intro -->
-                <div class="projects-intro reveal-left">
-                    <h2 class="section-title-left">Featured <span class="highlight">Projects</span></h2>
-                    <p>Check out some of my design projects, meticulously crafted with love and dedication.</p>
-                </div>
+            <div class="projects-intro reveal">
+                <h2 class="section-title-left">Featured <span class="highlight">Projects</span></h2>
+                <p>A selection of AI and machine learning projects I've built, from computer vision to LLM
+                    pipelines.</p>
+            </div>
 
-                <!-- Thumbnails -->
-                <div class="thumbnails-wrapper reveal-left">
-                    <!-- Connecting Lines -->
-                    <div class="active-line-connector" id="vertical-line"></div>
-                    <div class="horizontal-connector" id="horizontal-line"></div>
-
-                    <div class="thumbnails-container">
-                        <div class="thumbnail-item active" data-id="1">
-                            <img src="https://i.ibb.co/6JTQ9jc5/ai-observer.png" alt="AI Observer">
+            <div class="projects-grid reveal-right">
+                <!-- AI Observer -->
+                <div class="project-card">
+                    <div class="project-card-image-wrap">
+                        <img src="https://i.ibb.co/6JTQ9jc5/ai-observer.png" alt="AI Observer" loading="lazy">
+                    </div>
+                    <div class="project-card-content">
+                        <h3 class="project-card-title">AI Observer</h3>
+                        <p class="project-card-desc">Full-stack AI exam-proctoring platform with role-based access
+                            for teachers and students, built with React, TypeScript, and a PHP/MySQL backend.</p>
+                        <div class="detail-tags">
+                            <span class="detail-tag">AI</span>
+                            <span class="detail-tag">React</span>
+                            <span class="detail-tag">TypeScript</span>
                         </div>
-                        <div class="thumbnail-item" data-id="2">
-                            <img src="https://i.ibb.co/8ndrVw3D/hotel-booking.jpg" alt="Hotel Booking">
-                        </div>
-                        <div class="thumbnail-item" data-id="3">
-                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=200&h=200"
-                                alt="ArabSyntax">
-                        </div>
+                        <a href="https://github.com/NEGM18/ai_observer" target="_blank" rel="noopener noreferrer"
+                            class="project-card-link">
+                            View Project <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
 
-                <!-- Details -->
-                <div class="project-details-container reveal-left" id="project-details">
-                    <h3 class="detail-title">ai_observer</h3>
-                    <p class="detail-desc">A real-time, computer vision-based system designed to ensure the
-                        integrity of remote assessments by automatically detecting and flagging suspicious behavior
-                        during online exams.</p>
-                    <div class="detail-tags">
-                        <span class="detail-tag">AI</span>
-                        <span class="detail-tag">Python</span>
-                        <span class="detail-tag">Computer Vision</span>
+                <!-- Code AI Proctor -->
+                <div class="project-card">
+                    <div class="project-card-image-wrap">
+                        <img src="assets/img/project-cv.jpg" alt="Exam Proctoring Vision Engine"
+                            loading="lazy">
                     </div>
-                    <a href="https://github.com/NEGM18/ai_observer" target="_blank" class="project-link">View
-                        Project <i class="fab fa-github"></i></a>
+                    <div class="project-card-content">
+                        <h3 class="project-card-title">Exam Proctoring Vision Engine</h3>
+                        <p class="project-card-desc">Computer vision system that trains and runs YOLO models to
+                            detect suspicious behavior during online exams in real time, with a FastAPI backend and
+                            live webcam inference.</p>
+                        <div class="detail-tags">
+                            <span class="detail-tag">Computer Vision</span>
+                            <span class="detail-tag">YOLO</span>
+                            <span class="detail-tag">Python</span>
+                        </div>
+                        <a href="https://github.com/NEGM18/code-ai-proctor" target="_blank" rel="noopener noreferrer"
+                            class="project-card-link">
+                            View Project <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
 
-                <!-- Right Content: Large Preview -->
-                <div class="projects-preview reveal-right">
-                    <div class="preview-card">
-                        <img src="https://i.ibb.co/6JTQ9jc5/ai-observer.png" alt="Project Preview" class="preview-image"
-                            id="main-project-image">
-                        <div class="preview-overlay">
-                            <a href="https://github.com/NEGM18/ai_observer" target="_blank" class="view-project-btn"
-                                id="main-project-link">
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
+                <!-- NVIDIA DLI capstone -->
+                <div class="project-card">
+                    <div class="project-card-image-wrap">
+                        <img src="assets/img/project-rag.jpg" alt="Document Q&amp;A Assistant"
+                            loading="lazy">
+                    </div>
+                    <div class="project-card-content">
+                        <h3 class="project-card-title">Document Q&amp;A Assistant</h3>
+                        <p class="project-card-desc">A local, RAG-based document assistant built during NVIDIA's Deep
+                            Learning Institute course — upload documents and query them with cited answers, powered
+                            by LangChain, FAISS, and Ollama.</p>
+                        <div class="detail-tags">
+                            <span class="detail-tag">LLM</span>
+                            <span class="detail-tag">RAG</span>
+                            <span class="detail-tag">LangChain</span>
                         </div>
+                        <a href="https://github.com/NEGM18/nvidia" target="_blank" rel="noopener noreferrer"
+                            class="project-card-link">
+                            View Project <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -330,31 +319,6 @@
                 </div>
             </div>
         </section>
-        <section class="section" id="future-work">
-            <div class="container">
-                <h2 class="section-title reveal">Future Work</h2>
-                <div class="future-content">
-                    <div class="future-card reveal">
-                        <div class="future-icon">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div class="future-info">
-                            <h3>ai observer <span class="version-badge">v2 .0</span></h3>
-                            <p class="future-desc">A real-time, computer vision-based system designed to ensure the
-                                integrity of remote
-                                assessments by automatically detecting and flagging suspicious behavior during online
-                                exams..</p>
-                            <div class="progress-container">
-                                <div class="progress-bar">
-                                    <div class="progress" style="width: 35%"></div>
-                                </div>
-                                <span class="progress-text">Development in Progress</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
         <section class="section" id="contact">
             <div class="container">
                 <h2 class="section-title reveal">Get In Touch</h2>
@@ -371,6 +335,8 @@
     </main>
     <footer>
         <p>© 2026 Omar Negm.</p>
+        <p class="model-credit">"Saturn (Planet)" by Sebastian Sosnowski, licensed <a
+                href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.</p>
     </footer>
     <!-- Interactive AI Assistant Widget (3D Robot Nova) -->
     <div id="ai-assistant-widget">
@@ -443,9 +409,12 @@
 
     <!-- Three.js Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- GSAP Animation Library & Splash Screen -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <!-- GSAP Animation Library & Plugins -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="assets/js/splash.js"></script>
+    <script src="assets/js/rocket-transition.js"></script>
+    <script src="assets/js/saturn-skills.js"></script>
     <!-- Core and Assistant Scripts -->
     <script src="assets/js/script.js"></script>
     <script src="assets/js/assistant.js"></script>

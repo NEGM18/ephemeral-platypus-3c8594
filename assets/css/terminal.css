@@ -83,8 +83,7 @@
     border-radius: 12px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--card-border);
     overflow: hidden;
-    font-family: 'Courier New', Courier, monospace;
-    /* Monospace font */
+    font-family: var(--font-body);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -157,14 +156,13 @@
 }
 
 .prompt {
-    color: #27c93f;
-    /* Green prompt */
+    color: var(--primary-color);
     margin-right: 10px;
     font-weight: 700;
 }
 
 .command {
-    color: #fff;
+    color: var(--text-color);
     font-weight: 400;
 }
 
@@ -213,13 +211,9 @@
     }
 }
 
-.keyword-green {
-    color: #7ee787;
-    font-weight: 600;
-}
-
+.keyword-green,
 .keyword-blue {
-    color: #79c0ff;
+    color: var(--primary-color);
     font-weight: 600;
 }
 

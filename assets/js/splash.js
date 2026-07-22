@@ -333,7 +333,7 @@ document.addEventListener("DOMContentLoaded", () => {
             this.canvas = canvas;
             this.ctx = canvas.getContext("2d");
             this.stars = [];
-            this.numberOfStars = 250;
+            this.numberOfStars = 450;
             this.running = false;
             
             this.resize();
@@ -343,9 +343,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
         resize() {
-            const rect = this.canvas.parentElement.getBoundingClientRect();
-            this.width = rect.width;
-            this.height = rect.height;
+            this.width = window.innerWidth;
+            this.height = window.innerHeight;
             
             const dpr = window.devicePixelRatio || 1;
             this.canvas.width = this.width * dpr;
@@ -363,8 +362,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 this.stars.push({
                     x: Math.random() * this.width,
                     y: Math.random() * this.height,
-                    size: 0.3 + Math.random() * 1.5,
-                    opacity: 0.1 + Math.random() * 0.9,
+                    size: 0.6 + Math.random() * 2.2,
+                    opacity: 0.3 + Math.random() * 0.7,
                     speedX: (Math.random() - 0.5) * 0.15,
                     speedY: (Math.random() - 0.5) * 0.15,
                     pulseSpeed: 0.005 + Math.random() * 0.015,
@@ -385,8 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
         animate() {
             if (!this.running) return;
             
-            this.ctx.fillStyle = "rgba(5, 5, 5, 0.2)"; // Soft trail clear
-            this.ctx.fillRect(0, 0, this.width, this.height);
+            this.ctx.clearRect(0, 0, this.width, this.height);
             
             this.ctx.fillStyle = "#ffffff";
             for (const star of this.stars) {
@@ -480,47 +478,52 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
             });
+
+            // Trigger the Rocket Launch Event if it exists
+            if (typeof window.launchRocketTransition === 'function') {
+                window.launchRocketTransition();
+            }
             
             // Trigger minimalist hero entry animations (down to up image, circle pop, text reveals) if they exist
             if (document.querySelector("#hero-portrait")) {
                 gsap.fromTo("#hero-portrait", 
                     { y: "100%", opacity: 0 }, 
-                    { y: 0, opacity: 1, duration: 1.6, ease: "power4.out", delay: 0.2 }
+                    { y: 0, opacity: 1, duration: 1.6, ease: "power4.out", delay: 0.4 } // Increased delay to follow rocket
                 );
             }
             
             if (document.querySelector("#hero .hero-circle")) {
                 gsap.fromTo("#hero .hero-circle", 
                     { scale: 0.5, opacity: 0 }, 
-                    { scale: 1, opacity: 1, duration: 1.4, ease: "back.out(1.1)", delay: 0.1 }
+                    { scale: 1, opacity: 1, duration: 1.4, ease: "back.out(1.1)", delay: 0.3 }
                 );
             }
             
             if (document.querySelector("#hero .hero-left")) {
                 gsap.fromTo("#hero .hero-left", 
                     { y: 30, opacity: 0 }, 
-                    { y: 0, opacity: 1, duration: 1.2, ease: "power3.out", delay: 0.6 }
+                    { y: 0, opacity: 1, duration: 1.2, ease: "power3.out", delay: 0.8 }
                 );
             }
             
             if (document.querySelector("#hero .hero-giant-text")) {
                 gsap.fromTo("#hero .hero-giant-text", 
                     { x: 50, opacity: 0 }, 
-                    { x: 0, opacity: 1, duration: 1.4, ease: "power4.out", delay: 0.4 }
+                    { x: 0, opacity: 1, duration: 1.4, ease: "power4.out", delay: 0.6 }
                 );
             }
             
             if (document.querySelector("#hero .hero-arrow")) {
                 gsap.fromTo("#hero .hero-arrow", 
                     { opacity: 0 }, 
-                    { opacity: 1, duration: 1.0, ease: "power2.out", delay: 0.8 }
+                    { opacity: 1, duration: 1.0, ease: "power2.out", delay: 1.0 }
                 );
             }
             
             if (document.querySelector("#hero-tour-prompt")) {
                 gsap.fromTo("#hero-tour-prompt", 
                     { xPercent: -50, y: 15, opacity: 0 }, 
-                    { xPercent: -50, y: 0, opacity: 1, duration: 1.0, ease: "power3.out", delay: 1.0 }
+                    { xPercent: -50, y: 0, opacity: 1, duration: 1.0, ease: "power3.out", delay: 1.2 }
                 );
             }
             

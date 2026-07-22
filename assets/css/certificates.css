@@ -1,7 +1,7 @@
 /* Certificates Section */
 .certificates-section {
     padding: 6rem 5%;
-    background-color: var(--bg-color);
+    background-color: transparent;
     position: relative;
     overflow: hidden;
 }

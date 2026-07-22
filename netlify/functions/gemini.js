@@ -40,9 +40,18 @@ exports.handler = async function(event, context) {
             };
         }
 
-        // Get API key from environment variable (on Netlify) or fallback to default key for local dev
-        const API_KEY = process.env.GEMINI_API_KEY || "AIzaSyAP98uY-yAJayd9DYP2PbijHFlIGGBxOqo";
-        
+        // API key must come from a server-side environment variable — never hardcode
+        // it here, since this file is committed to a public repo.
+        const API_KEY = process.env.GEMINI_API_KEY;
+        if (!API_KEY) {
+            console.error("GEMINI_API_KEY environment variable is not set.");
+            return {
+                statusCode: 500,
+                headers,
+                body: JSON.stringify({ error: "Server misconfiguration", message: "GEMINI_API_KEY is not set." })
+            };
+        }
+
         // We use gemini-2.5-flash as the standard model
         const MODEL = "gemini-2.5-flash";
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
@@ -68,8 +77,8 @@ exports.handler = async function(event, context) {
             body: JSON.stringify(payload)
         });
 
-        const data = response.status === 200 || response.status === 201 
-            ? await response.json() 
+        const data = response.status === 200 || response.status === 201
+            ? await response.json()
             : null;
 
         if (!data) {
